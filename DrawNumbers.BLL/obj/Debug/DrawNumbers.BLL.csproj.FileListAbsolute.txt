@@ -1,0 +1,12 @@
+D:\Projects\DrawNumbers\DrawNumbers.BLL\bin\Debug\DrawNumbers.BLL.dll
+D:\Projects\DrawNumbers\DrawNumbers.BLL\bin\Debug\DrawNumbers.BLL.pdb
+D:\Projects\DrawNumbers\DrawNumbers.BLL\bin\Debug\DrawNumbers.DAL.dll
+D:\Projects\DrawNumbers\DrawNumbers.BLL\bin\Debug\EntityFramework.dll
+D:\Projects\DrawNumbers\DrawNumbers.BLL\bin\Debug\DrawNumbers.DAL.pdb
+D:\Projects\DrawNumbers\DrawNumbers.BLL\bin\Debug\DrawNumbers.DAL.dll.config
+D:\Projects\DrawNumbers\DrawNumbers.BLL\bin\Debug\EntityFramework.xml
+D:\Projects\DrawNumbers\DrawNumbers.BLL\obj\Debug\DrawNumbers.BLL.csprojAssemblyReference.cache
+D:\Projects\DrawNumbers\DrawNumbers.BLL\obj\Debug\DrawNumbers.BLL.csproj.CoreCompileInputs.cache
+D:\Projects\DrawNumbers\DrawNumbers.BLL\obj\Debug\DrawNumbers.BLL.csproj.CopyComplete
+D:\Projects\DrawNumbers\DrawNumbers.BLL\obj\Debug\DrawNumbers.BLL.dll
+D:\Projects\DrawNumbers\DrawNumbers.BLL\obj\Debug\DrawNumbers.BLL.pdb

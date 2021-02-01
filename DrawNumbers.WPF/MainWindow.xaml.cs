@@ -1,4 +1,5 @@
-﻿using System;
+﻿using DrawNumbers.BLL;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -22,7 +23,14 @@ namespace DrawNumbers.WPF
     {
         public MainWindow()
         {
+            // Create path to database
+            var dataBlockPath = System.IO.Path.Combine(@"..\..\..", "DrawNumbers.DAL");
+            AppDomain.CurrentDomain.SetData("DataDirectory", System.IO.Path.GetFullPath(dataBlockPath));
+
             InitializeComponent();
+
+            var draw = new Draw(5);
+            draw.Run();
         }
     }
 }
