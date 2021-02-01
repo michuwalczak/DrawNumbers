@@ -33,3 +33,4 @@ D:\Projects\DrawNumbers\DrawNumbers.WPF\obj\Debug\DrawNumbers.WPF.csproj.CoreCom
 D:\Projects\DrawNumbers\DrawNumbers.WPF\obj\Debug\DrawNumbers.WPF.csproj.CopyComplete
 D:\Projects\DrawNumbers\DrawNumbers.WPF\obj\Debug\DrawNumbers.WPF.exe
 D:\Projects\DrawNumbers\DrawNumbers.WPF\obj\Debug\DrawNumbers.WPF.pdb
+D:\Projects\DrawNumbers\DrawNumbers.WPF\obj\Debug\App.baml

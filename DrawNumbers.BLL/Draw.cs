@@ -1,6 +1,7 @@
 ﻿using DrawNumbers.DAL;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading;
@@ -10,9 +11,7 @@ namespace DrawNumbers.BLL
 {
     public class Draw
     {
-        private const int rangeLowerBound = 1;
-        private const int rangeUpperBound = 22;
-        private static readonly List<int> poolOfNumbers = Enumerable.Range(rangeLowerBound, rangeUpperBound - rangeLowerBound + 1).ToList();
+
 
         public delegate void DrawCompleted_Handler();
         public delegate void DrawnNewNumber_Handler(float progress);
@@ -66,7 +65,7 @@ namespace DrawNumbers.BLL
             get
             {
                 var drawnNumbers = dataBase.DrawnNumbers.Select(num => num.Value);
-                return poolOfNumbers.Except(drawnNumbers).ToList();
+                return DrawInfo.poolOfNumbers.Except(drawnNumbers).ToList();
             }
         }
 
@@ -84,12 +83,17 @@ namespace DrawNumbers.BLL
         /// </summary>
         public void Run()
         {
+            
+
+            
             var availableNumbers = RandomizeEnumerable(AvailableNumbers);
+            
 
             if (availableNumbers.Count() >= amountOfNumbers)
             {
-                // Divide available numbers on parts and run tasks
+                // Divide available numbers on parts and run tasks                
                 var parts = SplitOnParts(availableNumbers);
+
                 foreach (var part in parts)
                     RunDrawnTask(part);
             }
@@ -98,6 +102,7 @@ namespace DrawNumbers.BLL
                 // Inform observers about not enough available numbers
                 NotEnoughNumbers?.Invoke(availableNumbers.Count());
             }
+            
         }
 
         /// <summary>

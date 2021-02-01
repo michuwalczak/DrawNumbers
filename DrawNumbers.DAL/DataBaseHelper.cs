@@ -39,7 +39,7 @@ namespace DrawNumbers.DAL
             context = new DatabaseEntities();
             
             // TEST !!!!!!!!!!!!!
-            RemoveAll();
+            //RemoveAll();
         }
 
 
