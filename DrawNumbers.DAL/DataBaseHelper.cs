@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 
 namespace DrawNumbers.DAL
@@ -11,6 +10,7 @@ namespace DrawNumbers.DAL
     {
         private readonly DatabaseEntities context;
         private readonly object drawnNumberLock = new object();
+        private static List<DrawnNumber> drawnNumbers;
 
         /// <summary>
         /// Get or add drawn numbers
@@ -21,7 +21,10 @@ namespace DrawNumbers.DAL
             {
                 lock (drawnNumberLock)
                 {
-                    return context.DrawnNumber.ToList();
+                    if (drawnNumbers == null)
+                        drawnNumbers = context.DrawnNumber.ToList();
+                    
+                    return drawnNumbers;
                 };
             }
 
@@ -29,6 +32,7 @@ namespace DrawNumbers.DAL
             {
                 lock (drawnNumberLock)
                 {
+                    drawnNumbers.AddRange(value);
                     context.DrawnNumber.AddRange(value);
                 }
             }
@@ -37,9 +41,6 @@ namespace DrawNumbers.DAL
         public DataBaseHelper()
         {
             context = new DatabaseEntities();
-            
-            // TEST !!!!!!!!!!!!!
-            //RemoveAll();
         }
 
 
@@ -47,10 +48,9 @@ namespace DrawNumbers.DAL
         /// Add number to data base
         /// </summary>
         /// <param name="number"></param>
-        public void Add(DrawnNumber number)
+        public void Add(List<DrawnNumber> numbers)
         {
-            this.DrawnNumbers = new List<DrawnNumber> { number };
-            Console.WriteLine($"Added number: {number.Value}");
+            this.DrawnNumbers = numbers;
         }
 
         /// <summary>
@@ -58,19 +58,6 @@ namespace DrawNumbers.DAL
         /// </summary>
         public void Save()
         {
-            context.SaveChanges();
-        }
-
-        /// <summary>
-        /// Remove all numbers from database
-        /// </summary>
-        public void RemoveAll()
-        {
-            var data = from n in context.DrawnNumber
-                       select n;
-            foreach (var number in data)
-                context.DrawnNumber.Remove(number);
-
             context.SaveChanges();
         }
     }

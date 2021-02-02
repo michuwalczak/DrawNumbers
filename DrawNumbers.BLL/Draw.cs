@@ -1,35 +1,34 @@
 ﻿using DrawNumbers.DAL;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
-using System.Text;
 using System.Threading;
-using System.Threading.Tasks;
 
 namespace DrawNumbers.BLL
 {
+    /// <summary>
+    /// Draw defined amount of numbers
+    /// </summary>
     public class Draw
     {
-
-
         public delegate void DrawCompleted_Handler();
         public delegate void DrawnNewNumber_Handler(float progress);
         public delegate void NotEnoughNumbers_Handler(int maxAvailableCount);
+        public delegate void DrawResultsSaved_Handler();
         public event DrawCompleted_Handler DrawCompleted;
         public event DrawnNewNumber_Handler DrawnNewNumber;
         public event NotEnoughNumbers_Handler NotEnoughNumbers;
+        public event DrawResultsSaved_Handler DrawResultsSaved;
 
         private readonly DataBaseHelper dataBase;
-        private int amountOfNumbers;
+        private readonly int amountOfNumbers;
         private readonly object drawnNumberLock = new object();
-        private List<int> drawnNumbers;
+        private readonly List<int> drawnNumbers;
 
-        public int AmountOfNumbers
-        {
-            get { return amountOfNumbers; }
-            set { amountOfNumbers = value; }
-        }
+        /// <summary>
+        /// Chacks if any draw started
+        /// </summary>
+        public static bool IsRunning { get; private set; }
 
         /// <summary>
         /// Drawn numbers
@@ -57,22 +56,11 @@ namespace DrawNumbers.BLL
             }
         }
 
-        /// <summary>
-        /// Not drawn numbers
-        /// </summary>
-        private List<int> AvailableNumbers
-        {
-            get
-            {
-                var drawnNumbers = dataBase.DrawnNumbers.Select(num => num.Value);
-                return DrawInfo.poolOfNumbers.Except(drawnNumbers).ToList();
-            }
-        }
 
         public Draw(int amountOfNumbers)
         {
-            dataBase = new DataBaseHelper();
-            drawnNumbers = new List<int>();
+            this.dataBase = new DataBaseHelper();
+            this.drawnNumbers = new List<int>();
             this.amountOfNumbers = amountOfNumbers;
 
             this.DrawCompleted += OnCompletedTask;
@@ -83,17 +71,14 @@ namespace DrawNumbers.BLL
         /// </summary>
         public void Run()
         {
-            
-
-            
-            var availableNumbers = RandomizeEnumerable(AvailableNumbers);
-            
+            var availableNumbers = DrawInfo.AvailableNumbers;
 
             if (availableNumbers.Count() >= amountOfNumbers)
             {
+                IsRunning = true;
+
                 // Divide available numbers on parts and run tasks                
                 var parts = SplitOnParts(availableNumbers);
-
                 foreach (var part in parts)
                     RunDrawnTask(part);
             }
@@ -102,7 +87,6 @@ namespace DrawNumbers.BLL
                 // Inform observers about not enough available numbers
                 NotEnoughNumbers?.Invoke(availableNumbers.Count());
             }
-            
         }
 
         /// <summary>
@@ -132,9 +116,7 @@ namespace DrawNumbers.BLL
         /// <param name="part">Part of selected numbers</param>
         private void DrawNumber(object part)
         {
-            var numbers = (IEnumerable<int>)part;
-            var rnd = new Random();
-            var number = numbers.ToArray()[rnd.Next(numbers.Count())];
+            var number = RandomizeEnumerable((IEnumerable<int>)part).First();
             DrawnNumbers = new List<int>() { number };
         }
 
@@ -154,12 +136,23 @@ namespace DrawNumbers.BLL
         }
 
         /// <summary>
+        /// Save results in database and update information about draw
+        /// </summary>
+        private void SaveResults()
+        {
+            dataBase.Add(DrawnNumbers.Select(num => new DrawnNumber() { Value = num }).ToList());
+            dataBase.Save();
+            DrawInfo.Update();
+            IsRunning = false;
+            DrawResultsSaved?.Invoke();
+        }
+
+        /// <summary>
         /// Insert drawn numbers to data base on operation end
         /// </summary>
         private void OnCompletedTask()
         {
-            DrawnNumbers.ForEach(num => dataBase.Add(new DrawnNumber() { Value = num }));
-            dataBase.Save();
+            new Thread(SaveResults).Start();
         }
     }
 }

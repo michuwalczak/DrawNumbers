@@ -1,20 +1,12 @@
 ﻿using DrawNumbers.BLL;
 using MahApps.Metro.Controls;
+using MahApps.Metro.Controls.Dialogs;
 using System;
-using System.Collections.Generic;
 using System.ComponentModel;
-using System.Linq;
-using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
+using System.Windows.Threading;
 
 namespace DrawNumbers.WPF
 {
@@ -24,9 +16,27 @@ namespace DrawNumbers.WPF
     public partial class MainWindow : MetroWindow, INotifyPropertyChanged
     {
         public event PropertyChangedEventHandler PropertyChanged;
-
         private int progress;
+        private string progressLabel;
+        private string numbersUsage;
+        private ProgressDialogController dialogController;
 
+        /// <summary>
+        /// String representation of draw progress
+        /// </summary>
+        public string ProgresLabel
+        {
+            get { return progressLabel; }
+            set
+            {
+                progressLabel = $"Draw progress: {value}%";
+                NotifyPropertyChange(nameof(ProgresLabel));
+            }
+        }
+
+        /// <summary>
+        /// Integer representation of draw progress
+        /// </summary>
         public int Progress
         {
             get { return progress; }
@@ -37,8 +47,9 @@ namespace DrawNumbers.WPF
             }
         }
 
-        private string numbersUsage;
-
+        /// <summary>
+        /// Percentage value of used numbers
+        /// </summary>
         public string NumbersUsage
         {
             get { return numbersUsage; }
@@ -57,33 +68,94 @@ namespace DrawNumbers.WPF
 
             InitializeComponent();
             DataContext = this;
-
-            NumbersUsage = DrawInfo.UsageStage.ToString();
+            ProgresLabel = "0";
         }
 
-        
+        /// <summary>
+        /// Connect with database and initialize data
+        /// </summary>
+        private void Initialize()
+        {           
+            DrawInfo.Initialize();
+            NumbersUsage = DrawInfo.UsageStage.ToString();
+            CloseProgressDialog();
+        }
+
         protected void NotifyPropertyChange(string propertyName)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
 
+        #region controls events
+        private async void RunDraw_Button_Click(object sender, RoutedEventArgs e)
+        {
+            int.TryParse(AmountOfNumbers_TextBox.Text, out int amountOfNumbers);
+            if (amountOfNumbers > 0 && !Draw.IsRunning)
+            {
+                var draw = new Draw(amountOfNumbers);
+                draw.DrawnNewNumber += OnNewNumberDrawn;
+                draw.DrawCompleted += OnDrawCompleted;
+                draw.NotEnoughNumbers += OnNotEnoughNumbers;
+                draw.DrawResultsSaved += OnDrawResultsSaved;
+
+                await Task.Run(draw.Run);
+            }
+        }
+
+        private void MetroWindow_ContentRendered(object sender, EventArgs e)
+        {
+            ShowProgressDialog("", "Initializing data. Please wait...");
+            new Thread(Initialize).Start();
+
+        }
+        #endregion
+
+
+        #region dialog methods
+        private async void ShowDialog(string title, string message)
+        {
+            await this.ShowMessageAsync(title, message);
+        }
+
+        private async void ShowProgressDialog(string title, string message)
+        {
+            dialogController = await this.ShowProgressAsync(title, message);
+        }
+
+        private async void CloseProgressDialog()
+        {
+            if (dialogController != null && dialogController.IsOpen)
+                await dialogController.CloseAsync();
+        }
+        #endregion
+
+
+        #region draw events
         private void OnNewNumberDrawn(float progress)
         {
-            Progress = (int)(progress * 100.0);  
+            Progress = (int)(progress * 100.0);
+            ProgresLabel = (progress * 100.0).ToString();
         }
 
         private void OnDrawCompleted()
         {
-            NumbersUsage = DrawInfo.UsageStage.ToString();
+            Dispatcher.Invoke(delegate () {
+                ShowProgressDialog("Task completed successfully", "Saving results in database. Please wait...");
+            });
         }
 
-        private async void RunDraw_Button_Click(object sender, RoutedEventArgs e)
+        private void OnDrawResultsSaved()
         {
-            var amountOfNumbers = int.Parse(AmountOfNumbers_TextBox.Text);
-            var draw = new Draw(amountOfNumbers);
-            draw.DrawnNewNumber += OnNewNumberDrawn;
-            draw.DrawCompleted += OnDrawCompleted;
-            await Task.Run(draw.Run);
+            NumbersUsage = DrawInfo.UsageStage.ToString();
+            CloseProgressDialog();
         }
+
+        private void OnNotEnoughNumbers(int maxAvailableCount)
+        {
+            Dispatcher.Invoke(delegate () { 
+                ShowDialog("Information", $"Not enough available numbers in database. Maximum number is {maxAvailableCount}"); 
+            });
+        }
+        #endregion
     }
 }

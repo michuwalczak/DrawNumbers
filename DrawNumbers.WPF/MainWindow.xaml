@@ -6,17 +6,19 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:DrawNumbers.WPF"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
+        Title="Draw numbers" Height="300" Width="400" ContentRendered="MetroWindow_ContentRendered">
     <Grid>
         <StackPanel>
-            <Label x:Name="AmountOfNumbers_Label" Margin="10" Height="40" Width="100" Content="Amount of numbers"/>
-            <TextBox x:Name="AmountOfNumbers_TextBox" Margin="10" Height="20" Width="100"/>
+            <Label x:Name="AmountOfNumbers_Label" Margin="10, 10, 10, 5" Height="20" Width="200" Content="Amount of numbers" Padding="0" HorizontalContentAlignment="Center"/>
+            <TextBox x:Name="AmountOfNumbers_TextBox" Margin="10, 5, 10, 10" Height="20" Width="200" HorizontalContentAlignment="Center"/>
 
-            <Label x:Name="DrawnNumbers_Label" Margin="10" Height="40" Width="100" Content="Drawn numbers"/>
-            <TextBlock x:Name="DrawnNumbers_TextBlock" Margin="10" Height="20" Width="100" Text="{Binding NumbersUsage}"/>
+            <Label x:Name="DrawnNumbers_Label" Margin="10, 10, 10, 5" Height="20" Width="100" Content="Drawn numbers" Padding="0" HorizontalContentAlignment="Center"/>
+            <TextBlock x:Name="DrawnNumbers_TextBlock" Margin="10, 5, 10, 10" Height="20" Width="200" Text="{Binding NumbersUsage}" TextAlignment="Center"/>
 
-            <Button x:Name="RunDraw_Button" Margin="10" Width="100" Height="20" Content="Draw" Click="RunDraw_Button_Click"/>
-            <ProgressBar x:Name="ProgressBar" Margin="10" Style="{DynamicResource MahApps.Styles.ProgressBar}" Value="{Binding Progress}"/>
+            <Button x:Name="RunDraw_Button" Margin="5" Width="100" Height="20" Content="Draw" Click="RunDraw_Button_Click"/>
+
+            <TextBlock x:Name="ProgressValue" Margin="10, 10, 10, 5"  TextWrapping="Wrap" Text="{Binding ProgresLabel}" TextAlignment="Center"/>
+            <ProgressBar x:Name="ProgressBar" Margin="10, 5, 10, 10" Style="{DynamicResource MahApps.Styles.ProgressBar}" Value="{Binding Progress}"/>
         </StackPanel>
     </Grid>
 </mah:MetroWindow>
