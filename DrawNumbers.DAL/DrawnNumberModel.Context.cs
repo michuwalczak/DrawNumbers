@@ -18,6 +18,7 @@ namespace DrawNumbers.DAL
         public DatabaseEntities()
             : base("name=DatabaseEntities")
         {
+            ((IObjectContextAdapter)this).ObjectContext.CommandTimeout = 180; // seconds
         }
     
         protected override void OnModelCreating(DbModelBuilder modelBuilder)

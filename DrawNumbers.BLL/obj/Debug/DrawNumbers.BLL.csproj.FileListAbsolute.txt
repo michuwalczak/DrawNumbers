@@ -10,3 +10,5 @@ D:\Projects\DrawNumbers\DrawNumbers.BLL\obj\Debug\DrawNumbers.BLL.csproj.CoreCom
 D:\Projects\DrawNumbers\DrawNumbers.BLL\obj\Debug\DrawNumbers.BLL.csproj.CopyComplete
 D:\Projects\DrawNumbers\DrawNumbers.BLL\obj\Debug\DrawNumbers.BLL.dll
 D:\Projects\DrawNumbers\DrawNumbers.BLL\obj\Debug\DrawNumbers.BLL.pdb
+D:\Projects\DrawNumbers\DrawNumbers.BLL\bin\Debug\Z.EntityFramework.Extensions.dll
+D:\Projects\DrawNumbers\DrawNumbers.BLL\bin\Debug\Z.EntityFramework.Extensions.xml

@@ -7,18 +7,47 @@
         xmlns:local="clr-namespace:DrawNumbers.WPF"
         mc:Ignorable="d"
         Title="Draw numbers" Height="300" Width="400" ContentRendered="MetroWindow_ContentRendered">
-    <Grid>
-        <StackPanel>
-            <Label x:Name="AmountOfNumbers_Label" Margin="10, 10, 10, 5" Height="20" Width="200" Content="Amount of numbers" Padding="0" HorizontalContentAlignment="Center"/>
-            <TextBox x:Name="AmountOfNumbers_TextBox" Margin="10, 5, 10, 10" Height="20" Width="200" HorizontalContentAlignment="Center"/>
+    <StackPanel>
+        <Grid Margin="5">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="150"/>
+                <ColumnDefinition Width="250"/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="25"/>
+                <RowDefinition Height="25"/>
+                <RowDefinition Height="25"/>
+                <RowDefinition Height="25"/>
+                <RowDefinition Height="25"/>
+                <RowDefinition Height="25"/>
+                <RowDefinition Height="25"/>
+                <RowDefinition Height="25"/>
+                <RowDefinition Height="25"/>
+            </Grid.RowDefinitions>
+            <Label x:Name="LowerBound_Label" Grid.Column="0" Grid.Row="0" Height="Auto" Width="Auto" Content="Lower bound" Padding="0,0,0,0" HorizontalContentAlignment="Left"/>
+            <TextBox x:Name="LowerBound_TextBox" Grid.Column="1" Grid.Row="0" Width="Auto" HorizontalContentAlignment="Center" HorizontalAlignment="Stretch" Margin="0,0,18,24" Grid.RowSpan="2" Text="{Binding LowerBound}"/>
 
-            <Label x:Name="DrawnNumbers_Label" Margin="10, 10, 10, 5" Height="20" Width="100" Content="Drawn numbers" Padding="0" HorizontalContentAlignment="Center"/>
-            <TextBlock x:Name="DrawnNumbers_TextBlock" Margin="10, 5, 10, 10" Height="20" Width="200" Text="{Binding NumbersUsage}" TextAlignment="Center"/>
+            <Label x:Name="UpperBound_Label" Grid.Column="0" Grid.Row="1" Height="Auto" Width="Auto" Content="Upper bound" Padding="0,0,0,0" HorizontalContentAlignment="Left"/>
+            <TextBox x:Name="UpperBound_TextBox" Grid.Column="1" Grid.Row="1" Width="Auto" HorizontalContentAlignment="Center" HorizontalAlignment="Stretch" Margin="0,0,18,24" Grid.RowSpan="2" Text="{Binding UpperBound}"/>
+            
+            <Label x:Name="AmountOfNumbers_Label" Grid.Column="0" Grid.Row="2" Height="Auto" Width="Auto" Content="Amount of numbers" Padding="0,0,0,0" HorizontalContentAlignment="Left"/>
+            <TextBox x:Name="AmountOfNumbers_TextBox" Grid.Column="1" Grid.Row="2" Width="Auto" HorizontalContentAlignment="Center" HorizontalAlignment="Stretch" Margin="0,0,18,24" Grid.RowSpan="2"/>
 
-            <Button x:Name="RunDraw_Button" Margin="5" Width="100" Height="20" Content="Draw" Click="RunDraw_Button_Click"/>
+            <Label x:Name="DrawnNumbers_Label" Grid.Column="0" Grid.Row="3" Height="Auto" Width="Auto" Content="Drawn numbers" Padding="0" HorizontalContentAlignment="Left"/>
+            <TextBlock x:Name="DrawnNumbers_TextBlock" Grid.Column="1" Grid.Row="3" Height="Auto" Width="Auto" Text="{Binding NumbersUsage}" TextAlignment="Center" Margin="0,2,18,2"/>
 
-            <TextBlock x:Name="ProgressValue" Margin="10, 10, 10, 5"  TextWrapping="Wrap" Text="{Binding ProgresLabel}" TextAlignment="Center"/>
-            <ProgressBar x:Name="ProgressBar" Margin="10, 5, 10, 10" Style="{DynamicResource MahApps.Styles.ProgressBar}" Value="{Binding Progress}"/>
-        </StackPanel>
-    </Grid>
+            <TextBlock x:Name="ProgressValue" Grid.Column="0" Grid.Row="4" TextWrapping="Wrap" Text="{Binding ProgresLabel}" TextAlignment="Left"/>
+            <ProgressBar x:Name="ProgressBar" Grid.Column="1" Grid.Row="4" Height="Auto" Width="Auto" Style="{DynamicResource MahApps.Styles.ProgressBar}" Value="{Binding Progress}" Margin="0,5,18,5"/>
+
+            <Label x:Name="DrawTime_Label" Grid.Column="0" Grid.Row="5" Height="Auto" Width="Auto" Content="Draw time [ms]" Padding="0" HorizontalContentAlignment="Left"/>
+            <TextBlock x:Name="DrawTime_TextBox" Grid.Column="1" Grid.Row="5" Height="Auto" Width="Auto" TextWrapping="Wrap" Text="{Binding DrawTime}" TextAlignment="Center" Margin="0,2,18,2"/>
+
+            <Label x:Name="SaveTime_Label" Grid.Column="0" Grid.Row="6" Height="Auto" Width="Auto" Content="Save time [ms]" Padding="0" HorizontalContentAlignment="Left"/>
+            <TextBlock x:Name="SaveTime_TextBox" Grid.Column="1" Grid.Row="6" Height="Auto" Width="Auto" TextWrapping="Wrap" Text="{Binding SaveTime}" TextAlignment="Center" Margin="0,2,18,2"/>
+
+            <Label x:Name="TotalTime_Label" Grid.Column="0" Grid.Row="7" Height="Auto" Width="Auto" Content="Total time [ms]" Padding="0" HorizontalContentAlignment="Left"/>
+            <TextBlock x:Name="TotalTime_TextBox" Grid.Column="1" Grid.Row="7" Height="Auto" Width="Auto" TextWrapping="Wrap" Text="{Binding TotalTime}" TextAlignment="Center" Margin="0,2,18,2"/>
+        </Grid>
+        <Button x:Name="RunDraw_Button" Grid.Column="0" Grid.Row="4" Width="100" Height="20" Content="Draw" Click="RunDraw_Button_Click"/>
+    </StackPanel>
 </mah:MetroWindow>

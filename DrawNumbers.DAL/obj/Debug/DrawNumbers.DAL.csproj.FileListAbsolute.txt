@@ -10,3 +10,7 @@ D:\Projects\DrawNumbers\DrawNumbers.DAL\obj\Debug\DrawNumbers.DAL.csproj.CoreCom
 D:\Projects\DrawNumbers\DrawNumbers.DAL\obj\Debug\DrawNumbers.DAL.csproj.CopyComplete
 D:\Projects\DrawNumbers\DrawNumbers.DAL\obj\Debug\DrawNumbers.DAL.dll
 D:\Projects\DrawNumbers\DrawNumbers.DAL\obj\Debug\DrawNumbers.DAL.pdb
+D:\Projects\DrawNumbers\DrawNumbers.DAL\bin\Debug\EntityFramework.BulkInsert.dll
+D:\Projects\DrawNumbers\DrawNumbers.DAL\bin\Debug\EntityFramework.BulkInsert.dll.config
+D:\Projects\DrawNumbers\DrawNumbers.DAL\bin\Debug\Z.EntityFramework.Extensions.dll
+D:\Projects\DrawNumbers\DrawNumbers.DAL\bin\Debug\Z.EntityFramework.Extensions.xml
